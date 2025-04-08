@@ -15,6 +15,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig  {
 
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -27,7 +30,8 @@ public class SecurityConfig  {
                     .usernameParameter("username") // 인증할때 사용할 사용자의 아이디
                     .passwordParameter("password") // 비밀번호
                     .loginProcessingUrl("/loginCheck") // ★ 로그인 처리 요청 경로 설정
-                    .defaultSuccessUrl("/user/main")) // 성공시 리다이렉션 경로설정
+                    .successHandler(customAuthenticationSuccessHandler)
+                    .failureHandler(customAuthenticationFailureHandler))
                 .logout(logout -> logout
                         .logoutUrl("/user/logout")
                         .logoutSuccessUrl("/user/main")

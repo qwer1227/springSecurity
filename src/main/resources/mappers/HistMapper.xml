@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.security.hist.dao.HistDAO">
+
+<!--    void insertHist(HistVO histVO);-->
+
+        <insert id="insertHist" parameterType="string">
+            INSERT INTO LOGIN_HISTORY
+            (USERNAME)
+            VALUES
+            (#{USERNAME})
+        </insert>
+
+<!--    List<HistVO> getHistList();-->
+
+        <select id="getHistList" parameterType="com.example.security.hist.vo.HistVO" resultType="com.example.security.hist.vo.HistVO">
+            SELECT *
+            FROM LOGIN_HISTORY
+        </select>
+
+</mapper>
