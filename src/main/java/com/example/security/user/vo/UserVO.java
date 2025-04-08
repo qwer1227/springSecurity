@@ -7,6 +7,7 @@ public class UserVO {
     private String member_nm;          // 회원 이름
     private String member_nick;        // 회원 닉네임
     private String member_pw;          // 비밀번호
+    private String confirmPassword; //중복확인
     private String member_birth;       // 생년월일
     private String member_tel;         // 전화번호
     private String member_email;       // 이메일

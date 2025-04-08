@@ -4,10 +4,21 @@
 
 <mapper namespace="com.example.security.user.dao.UserDAO">
 
+    <!--  UserVO getUserByUsername(String username);  -->
+
     <select id="getUserByUsername" parameterType="String" resultType="com.example.security.user.vo.UserVO">
         select *
         from MEMBERS
         where MEMBER_NM = #{username}
     </select>
+
+    <!--   void insertUser(UserVO user);-->
+
+    <insert id="insertUser" parameterType="com.example.security.user.vo.UserVO">
+        insert into MEMBERS
+        (MEMBER_NM,MEMBER_PW)
+        VALUES
+        (#{member_nm},#{member_pw})
+    </insert>
 
 </mapper>

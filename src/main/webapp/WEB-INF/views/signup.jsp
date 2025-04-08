@@ -10,9 +10,9 @@
 <body>
 <div class="container">
     <h2>회원가입</h2>
-    <form action="/signup" method="post">
-        <input type="email" name="email" placeholder="이메일" required>
-        <input type="password" name="password" placeholder="비밀번호" required>
+    <form action="/user/insertUser" method="post">
+        <input type="text" name="member_nm" placeholder="아이디" required>
+        <input type="password" name="member_pw" placeholder="비밀번호" required>
         <input type="password" name="confirmPassword" placeholder="비밀번호 확인" required>
         <button type="submit">회원가입</button>
     </form>

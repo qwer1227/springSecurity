@@ -5,5 +5,6 @@ import com.example.security.user.vo.UserVO;
 public interface UserService {
 
     UserVO getUserByUsername(String username);
+    void insertUser(UserVO user);
 
 }

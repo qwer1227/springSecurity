@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserDAO {
 
     UserVO getUserByUsername(String username);
+    void insertUser(UserVO user);
 }
