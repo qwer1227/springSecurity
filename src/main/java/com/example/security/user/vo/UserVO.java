@@ -1,8 +1,10 @@
 package com.example.security.user.vo;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Builder
+@Getter
 public class UserVO {
     private String member_nm;          // 회원 이름
     private String member_nick;        // 회원 닉네임
@@ -18,4 +20,5 @@ public class UserVO {
     private String mentor_expertise;   // 멘토 전문 분야
     private String mentor_experience;  // 멘토 경험
     private String mentor_current_job;  // 멘토 현재 직업
+
 }

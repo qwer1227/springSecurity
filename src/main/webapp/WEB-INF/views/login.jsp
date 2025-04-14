@@ -13,19 +13,18 @@
         <input type="text" name="username" placeholder="아이디" required>
         <input type="password" name="password" placeholder="비밀번호" required>
         <button type="submit">로그인</button>
-<%--        <c:if test="${not empty sessionScope.errorMsg}">--%>
-<%--            <script>--%>
-<%--                alert("${sessionScope.errorMsg}");--%>
-<%--            </script>--%>
-<%--            <c:remove var="errorMsg" scope="session"/>--%>
-<%--        </c:if>--%>
-        <c:if test="${not empty param.error and param.error ne ''}">
-            <script>
-                alert("${param.error}");
-            </script>
+        <c:if test="${not empty sessionScope.errorMsg}">
+            <div class="alert alert-danger">
+                    ${sessionScope.errorMsg}
+            </div>
+            <%
+                // 세션에서 errorMsg 삭제
+                session.removeAttribute("errorMsg");
+            %>
         </c:if>
     </form>
     <p>계정이 없으신가요? <a href="/user/register">회원가입</a></p>
+    <p>메인으로 돌아가기 <a href="/user/main">메인</a> </p>
 </div>
 </body>
 </html>

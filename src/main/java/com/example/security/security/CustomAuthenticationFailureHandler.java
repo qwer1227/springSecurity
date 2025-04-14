@@ -35,9 +35,11 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
             errorMsg = "로그인 실패" + exception.getMessage();
         }
 
-//        request.getSession().setAttribute("errorMsg", errorMsg);
-//        response.sendRedirect("/user/login");
-        response.sendRedirect("/user/login?error=" + URLEncoder.encode(errorMsg, StandardCharsets.UTF_8));
+        // 세션에 errorMsg 저장
+        request.getSession().setAttribute("errorMsg", errorMsg);
+
+        // 로그인 페이지로 리다이렉트
+        response.sendRedirect("/user/login");
 
 
 

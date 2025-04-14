@@ -1,6 +1,8 @@
 package com.example.security.user.service.impl;
 
+import com.example.security.user.Enum.UserJoinResult;
 import com.example.security.user.dao.UserDAO;
+import com.example.security.user.dto.InsertForm;
 import com.example.security.user.service.UserService;
 import com.example.security.user.vo.UserVO;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +22,19 @@ public class UserImplements implements UserService {
     }
 
     @Override
-    public void insertUser(UserVO user) {
-        user.setMember_pw(passwordEncoder.encode(user.getMember_pw()));
-        userDAO.insertUser(user);
+    public UserJoinResult insertUser(InsertForm user) {
+
+        if(user.getPassword().equals(user.getConfirmPassword())) {
+            UserVO userVO = UserVO.builder()
+                    .member_nm(user.getUsername())
+                    .member_pw(passwordEncoder.encode(user.getPassword()))
+                    .build();
+            userDAO.insertUser(userVO);
+        } else {
+            return UserJoinResult.PASSWORD_MISMATCH;
+        }
+
+        return UserJoinResult.SUCCESS;
     }
 
 
