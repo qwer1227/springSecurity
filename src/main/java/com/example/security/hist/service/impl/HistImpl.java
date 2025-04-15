@@ -3,13 +3,13 @@ package com.example.security.hist.service.impl;
 import com.example.security.hist.dao.HistDAO;
 import com.example.security.hist.service.HistService;
 import com.example.security.hist.vo.HistVO;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class HistImpl implements HistService {
 
     private final HistDAO histDAO;

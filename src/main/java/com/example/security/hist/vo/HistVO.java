@@ -1,10 +1,12 @@
 package com.example.security.hist.vo;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Builder
 public class HistVO {
     private String ID;
     private String USERNAME;
