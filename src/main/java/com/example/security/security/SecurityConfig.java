@@ -1,5 +1,6 @@
 package com.example.security.security;
 
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,10 +24,11 @@ public class SecurityConfig  {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/user/login", "/user/register", "/css/**", "/js/**", "/images/**").permitAll()
-                        .anyRequest().permitAll())
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                        .requestMatchers("/","/user/login", "/user/register", "/css/**", "/js/**", "/images/**").permitAll()
+                        .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
-                    .loginPage("/user/login") //로그인페이지 경로설정
+                    .loginPage("/user/login")//로그인페이지 경로설정
                     .usernameParameter("username") // 인증할때 사용할 사용자의 아이디
                     .passwordParameter("password") // 비밀번호
                     .loginProcessingUrl("/loginCheck") // ★ 로그인 처리 요청 경로 설정
@@ -34,7 +36,7 @@ public class SecurityConfig  {
                     .failureHandler(customAuthenticationFailureHandler))
                 .logout(logout -> logout
                         .logoutUrl("/user/logout")
-                        .logoutSuccessUrl("/user/main")
+                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true));
 

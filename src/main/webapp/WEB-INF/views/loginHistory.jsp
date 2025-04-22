@@ -67,7 +67,7 @@
 
 <h2>로그인 기록</h2>
 
-<a href="/user/main">메인으로 돌아가기</a><br>
+<a href="/">메인으로 돌아가기</a><br>
 
 <button id="loadHistoryBtn">로그인 기록 불러오기</button>
 <table id="historyTable">

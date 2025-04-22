@@ -1,5 +1,6 @@
 package com.example.security.main;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
     @GetMapping("/")
-    public String main(Model model){
+    public String main(Model model, HttpSession session){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -21,7 +22,9 @@ public class MainController {
             if(principal instanceof User){
                 User user = (User)principal;
                 String username = user.getUsername();
+
                 model.addAttribute("username",username);
+                session.setAttribute("username",username);
             }
         }
 

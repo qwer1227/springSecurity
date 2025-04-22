@@ -26,8 +26,8 @@ public class UserImplements implements UserService {
 
         if(user.getPassword().equals(user.getConfirmPassword())) {
             UserVO userVO = UserVO.builder()
-                    .member_nm(user.getUsername())
-                    .member_pw(passwordEncoder.encode(user.getPassword()))
+                    .memberNm(user.getUsername())
+                    .memberPw(passwordEncoder.encode(user.getPassword()))
                     .build();
             userDAO.insertUser(userVO);
         } else {

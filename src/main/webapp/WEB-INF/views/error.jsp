@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <H2>에러페이지</H2>
-    <a href="/user/main">메인으로 돌아가기</a>
+    <a href="/">메인으로 돌아가기</a>
     <p>에러메시지 : ${error}</p>
 </div>
 </body>

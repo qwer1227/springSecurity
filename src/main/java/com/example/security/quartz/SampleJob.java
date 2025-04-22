@@ -20,7 +20,7 @@ public class SampleJob implements Job {
 
         UserVO user = userService.getUserByUsername("관리자");
 
-        String email = user.getMember_email();
+        String email = user.getMemberEmail();
 
         mailService.sendSimpleMail(email);
 

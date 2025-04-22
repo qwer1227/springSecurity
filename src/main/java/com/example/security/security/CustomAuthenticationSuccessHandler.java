@@ -26,7 +26,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         histService.insertHist(username);
 
         //로그인 성공시 main화면으로 이동
-        response.sendRedirect("/user/main");
+        response.sendRedirect("/");
 
     }
 }
