@@ -25,7 +25,7 @@ public class SecurityConfig  {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/","/user/login", "/user/register", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/","/user/login", "/user/register","/user/insertUser" , "/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                     .loginPage("/user/login")//로그인페이지 경로설정

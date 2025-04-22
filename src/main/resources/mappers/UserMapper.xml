@@ -30,9 +30,9 @@
 
     <insert id="insertUser" parameterType="com.example.security.user.vo.UserVO">
         insert into MEMBERS
-        (MEMBER_NM,MEMBER_PW)
+        (MEMBER_NM,MEMBER_PW,ROLE)
         VALUES
-        (#{memberNm},#{memberPw})
+        (#{memberNm},#{memberPw},'USER')
     </insert>
 
 </mapper>
