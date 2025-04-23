@@ -4,30 +4,81 @@
 
 <mapper namespace="com.example.security.board.dao.BoardDao">
 
+
     <!-- List<BoardVO> getBoardList();-->
     <select id="getBoardList" resultType="com.example.security.board.vo.BoardVO">
-        SELECT P.*,M.*
-        FROM POSTS P
-        JOIN MEMBERS M ON P.MEMBER_NO = M.MEMBER_NO
+        SELECT *
+        FROM(
+            SELECT
+                P.TITLE
+            ,   P.POST_NO
+            ,   P.CONTENT
+            ,   P.CREATED_AT
+            ,   P.UPDATED_AT
+            ,   M.MEMBER_NM
+            ,   ROW_NUMBER() OVER (ORDER BY P.CREATED_AT DESC, P.POST_NO DESC) AS rn
+            FROM
+                POSTS P
+            JOIN MEMBERS M ON P.MEMBER_NO = M.MEMBER_NO
+            WHERE
+                P.DELETE_AT = 'N'
+            ) AS POSTS
+        WHERE rn BETWEEN #{begin} AND #{end}
     </select>
 
     <!-- BoardVO getBoardById(int id);-->
     <select id="getBoardById" parameterType="int" resultType="com.example.security.board.vo.BoardVO">
-        SELECT P.TITLE, P.CONTENT, P.CREATED_AT, P.POST_NO, M.MEMBER_NM
+        SELECT P.TITLE, P.CONTENT, P.CREATED_AT, P.POST_NO, M.MEMBER_NM, P.MEMBER_NO
         FROM POSTS P
         JOIN MEMBERS M ON P.MEMBER_NO = M.MEMBER_NO
         WHERE 1=1
         AND P.POST_NO = #{id}
+        AND P.DELETE_AT = 'N'
     </select>
 
     <!-- void insertPost(BoardVO board);-->
     <insert id="insertPost" parameterType="com.example.security.board.vo.BoardVO" useGeneratedKeys="true" keyProperty="postNo">
         INSERT INTO
         POSTS
-        (TITLE,CONTENT,CREATED_AT,MEMBER_NO)
+        (TITLE,CONTENT,CREATED_AT,MEMBER_NO,DELETE_AT)
         VALUES
-        (#{title},#{content},NOW(),#{memberNo})
+        (#{title},#{content},NOW(),#{memberNo},'N')
     </insert>
+
+    <!-- void updatePost(BoardVO board); -->
+    <update id="updatePost" parameterType="com.example.security.board.vo.BoardVO" useGeneratedKeys="true" keyProperty="postNo">
+        UPDATE POSTS
+        SET
+            TITLE = #{title},
+            CONTENT = #{content}
+        WHERE
+            1=1
+        AND
+            POST_NO = #{postNo}
+        AND
+            DELETE_AT = 'N'
+    </update>
+
+    <!-- int getTotalRows(SearchDto searchDto); -->
+    <select id="getTotalRows" parameterType="com.example.security.board.dto.SearchDto" resultType="int">
+        SELECT
+            COUNT(*) as cnt
+        FROM
+            POSTS
+        WHERE
+            DELETE_AT = 'N'
+    </select>
+
+    <update id="deletePost" parameterType="int">
+        UPDATE
+            POSTS
+        SET
+            DELETE_AT = 'Y'
+        WHERE
+            POST_NO = #{postNo}
+    </update>
+
+
 
 
 </mapper>

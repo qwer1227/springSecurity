@@ -98,8 +98,16 @@
     </div>
     <p>${board.content}</p>
 
+    <c:set var="loginUser" value="${sessionScope.user}" />
+
     <div class="actions">
-        <a href="update.jsp?postNo=${board.postNo}">수정</a>
+        <c:if test="${board.memberNo == loginUser}">
+        <a href="update?postNo=${board.postNo}">수정</a>
+        <form action="delete" method="post">
+            <input type="hidden" name="postNo" value="${board.postNo}">
+            <button type="submit">삭제</button>
+        </form>
+        </c:if>
         <a href="/board/list">목록으로</a>
     </div>
 </div>

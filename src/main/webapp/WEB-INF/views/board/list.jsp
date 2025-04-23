@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -126,6 +127,59 @@
             </tr>
         </c:forEach>
     </table>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+
+            <!-- "이전" 버튼 -->
+            <c:if test="${pagination.first}">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </c:if>
+            <c:if test="${!pagination.first}">
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page=${pagination.prevPage}&opt=${param.opt}&keyword=${param.keyword}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </c:if>
+
+            <!-- 페이지 번호 -->
+            <c:forEach var="pageNum" begin="${pagination.beginPage}" end="${pagination.endPage}">
+                <li class="page-item ${pageNum == pagination.page ? 'active' : ''}">
+                    <a class="page-link"
+                       href="?page=${pageNum}&opt=${param.opt}&keyword=${param.keyword}">
+                            ${pageNum}
+                    </a>
+                </li>
+            </c:forEach>
+
+            <!-- "다음" 버튼 -->
+            <c:if test="${pagination.last}">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </c:if>
+            <c:if test="${!pagination.last}">
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page=${pagination.nextPage}&opt=${param.opt}&keyword=${param.keyword}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </c:if>
+
+        </ul>
+    </nav>
 </div>
 </body>
 </html>

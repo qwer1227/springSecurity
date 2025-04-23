@@ -104,7 +104,7 @@
 
 <div class="container">
     <h2>글쓰기</h2>
-    <form action="/board/submit" method="post">
+    <form action="/board/write" method="post">
         <label for="title">제목:</label>
         <input type="text" name="title" id="title" required>
 

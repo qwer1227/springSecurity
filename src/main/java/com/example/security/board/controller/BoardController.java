@@ -1,10 +1,12 @@
 package com.example.security.board.controller;
 
 import com.example.security.board.dto.BoardForm;
+import com.example.security.board.dto.SearchDto;
 import com.example.security.board.service.BoardService;
 import com.example.security.board.vo.BoardVO;
 import com.example.security.security.CustomUserDetailsService;
 import com.example.security.user.vo.UserVO;
+import com.example.security.utils.ListDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,11 +25,13 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/list")
-    public String board(Model model) {
+    public String board(Model model, SearchDto searchDto) {
 
-        List<BoardVO> list = boardService.getBoardList();
+        ListDto<BoardVO> list = boardService.getBoardList(searchDto);
 
-        model.addAttribute("boardList", list);
+        model.addAttribute("boardList", list.getData());
+        model.addAttribute("pagination", list.getPaging());
+
 
         return "board/list";
     }
@@ -47,11 +51,40 @@ public class BoardController {
         return "board/write";
     }
 
-    @PostMapping("/submit")
-    public String submit(@ModelAttribute BoardForm vo, Principal principal){
+    @PostMapping("/write")
+    public String writeSubmit(@ModelAttribute BoardForm vo, Principal principal){
 
         int postNo = boardService.insertPost(vo,principal);
 
         return "redirect:/board/detail?postNo=" + postNo;
     }
+
+    @GetMapping("/update")
+    public String update(Model model, @RequestParam(name = "postNo") int id){
+
+        BoardVO detail = boardService.getBoardById(id);
+
+        model.addAttribute("board", detail);
+
+        return "board/update";
+    }
+
+    @PostMapping("/update")
+    public String updateSubmit(@ModelAttribute BoardForm vo, Principal principal){
+
+        int postNo = boardService.updatePost(vo,principal);
+
+        return "redirect:/board/detail?postNo=" + postNo;
+    }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam(name = "postNo") int postNo){
+
+        boardService.deletePost(postNo);
+
+        return "redirect:/board/list";
+    }
+
+
+
 }
