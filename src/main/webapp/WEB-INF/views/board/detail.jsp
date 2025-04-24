@@ -68,6 +68,110 @@
         .actions a:hover {
             background-color: #444;
         }
+
+        .actions button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0.5rem 0;
+            background-color: #555;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .actions button:hover {
+            background-color: #444;
+        }
+
+        .comments-section {
+            margin-top: 2rem;
+            border-top: 1px solid #ddd;
+            padding-top: 1rem;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .comment-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .comment-actions button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .comment-actions button:hover {
+            background-color: #0056b3;
+        }
+
+        .comment-list {
+            margin-top: 2rem;
+        }
+
+        .comment-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .comment-item .comment-text {
+            margin-bottom: 1rem;
+        }
+
+        .comment-item .reply-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .comment-item .reply-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .reply-form {
+            margin-top: 1rem;
+        }
+
+        .reply-form textarea {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .reply-form button {
+            padding: 0.5rem 1rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .reply-form button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -111,6 +215,50 @@
         <a href="/board/list">목록으로</a>
     </div>
 </div>
+<div class="comments-section">
+    <h3>댓글</h3>
 
+    <!-- 댓글 작성 입력란 -->
+    <form action="addComment" method="post" class="comment-form">
+        <input type="hidden" name="postNo" value="${board.postNo}">
+        <textarea name="commentText" rows="4" placeholder="댓글을 작성하세요..." class="form-control"></textarea>
+        <div class="comment-actions">
+            <button type="submit" class="btn btn-primary">댓글 작성</button>
+        </div>
+    </form>
+
+    <!-- 댓글 목록 -->
+    <div class="comment-list">
+        <c:forEach var="comment" items="${commentList}">
+            <div class="comment-item">
+                <div class="comment-text">
+                    <p>${comment.commentText}</p>
+                    <span class="comment-author">${comment.memberNm}</span>
+                </div>
+                <button class="reply-btn btn btn-secondary" onclick="showReplyForm(${comment.commentNo})">답글 달기</button>
+
+                <!-- 답글 작성 폼 (기본으로 숨기기) -->
+                <div class="reply-form" id="reply-form-${comment.commentNo}" style="display:none;">
+                    <form action="addReply" method="post">
+                        <input type="hidden" name="parentCommentNo" value="${comment.commentNo}">
+                        <textarea name="replyText" rows="2" placeholder="답글을 작성하세요..." class="form-control"></textarea>
+                        <button type="submit" class="btn btn-primary">답글 작성</button>
+                    </form>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
 </body>
 </html>
+
+<script>
+    function showReplyForm(commentNo) {
+        var replyForm = document.getElementById('reply-form-' + commentNo);
+        if (replyForm.style.display === "none") {
+            replyForm.style.display = "block";
+        } else {
+            replyForm.style.display = "none";
+        }
+    }
+</script>

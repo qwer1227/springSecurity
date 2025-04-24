@@ -109,7 +109,20 @@
 
 <div class="container">
     <h2>게시판 목록</h2>
-    <a href="/board/write" class="write-btn">글쓰기</a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="/board/write" class="write-btn">글쓰기</a>
+
+        <form class="form-inline" method="get" action="/board/list">
+            <select class="form-control mr-2" name="opt">
+                <option value="title" ${param.opt == 'title' ? 'selected' : ''}>제목</option>
+                <option value="content" ${param.opt == 'content' ? 'selected' : ''}>내용</option>
+                <option value="writer" ${param.opt == 'writer' ? 'selected' : ''}>작성자</option>
+            </select>
+            <input type="text" class="form-control mr-2" name="keyword" placeholder="검색어"
+                   value="${param.keyword}">
+            <button type="submit" class="btn btn-primary">검색</button>
+        </form>
+    </div>
 
     <table>
         <tr>
@@ -129,8 +142,9 @@
     </table>
 
     <!-- Pagination -->
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" style="margin-top: 2rem;">
         <ul class="pagination justify-content-center">
+
 
             <!-- "이전" 버튼 -->
             <c:if test="${pagination.first}">

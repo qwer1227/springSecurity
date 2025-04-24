@@ -22,6 +22,19 @@
             JOIN MEMBERS M ON P.MEMBER_NO = M.MEMBER_NO
             WHERE
                 P.DELETE_AT = 'N'
+        <if test="opt != null">
+            <choose>
+                <when test="opt == 'title'">
+                    AND P.TITLE LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="opt == 'writer'">
+                    AND M.MEMBER_NM LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="opt == 'content'">
+                    AND P.CONTENT LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+            </choose>
+        </if>
             ) AS POSTS
         WHERE rn BETWEEN #{begin} AND #{end}
     </select>
@@ -64,9 +77,24 @@
         SELECT
             COUNT(*) as cnt
         FROM
-            POSTS
+            POSTS P
+        JOIN MEMBERS M ON P.MEMBER_NO = M.MEMBER_NO
         WHERE
-            DELETE_AT = 'N'
+            P.DELETE_AT = 'N'
+
+            <if test="opt != null and keyword != null and keyword !=''">
+                <choose>
+                    <when test="opt == 'title'">
+                        AND P.TITLE LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="opt == 'writer'">
+                        AND M.MEMBER_NM LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="opt == 'content'">
+                        AND P.CONTENT LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
     </select>
 
     <update id="deletePost" parameterType="int">
