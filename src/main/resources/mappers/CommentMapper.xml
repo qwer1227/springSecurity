@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.security.board.dao.CommentDao">
+
+    <!-- List<CommentVO> getComments(); -->
+    <select id="getComments" parameterType="int" resultType="com.example.security.board.vo.CommentVO">
+        SELECT
+            C.*
+        ,   M.MEMBER_NM
+        FROM
+            COMMENTS C
+        JOIN MEMBERS M ON C.USER_NO = M.MEMBER_NO
+        WHERE
+            C.DELETE_AT = 'N'
+        AND
+            C.POST_NO = #{id}
+    </select>
+
+    <!-- void addComment(CommentVO commentForm); -->
+    <insert id="addComment" parameterType="com.example.security.board.vo.CommentVO">
+        INSERT INTO COMMENTS
+        (POST_NO, USER_NO, COMMENT_TEXT, DELETE_AT)
+        VALUES
+        (#{postNo},#{userNo},#{commentText},'N')
+    </insert>
+
+</mapper>

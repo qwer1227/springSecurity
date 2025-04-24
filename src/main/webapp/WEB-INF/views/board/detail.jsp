@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -219,13 +221,13 @@
     <h3>댓글</h3>
 
     <!-- 댓글 작성 입력란 -->
-    <form action="addComment" method="post" class="comment-form">
-        <input type="hidden" name="postNo" value="${board.postNo}">
-        <textarea name="commentText" rows="4" placeholder="댓글을 작성하세요..." class="form-control"></textarea>
-        <div class="comment-actions">
-            <button type="submit" class="btn btn-primary">댓글 작성</button>
-        </div>
-    </form>
+    <input type="hidden" id="postNo" name="postNo" value="${board.postNo}">
+    <input type="hidden" id="userNo" name="userNo" value="${sessionScope.user}">
+    <textarea id="commentText" name="commentText" rows="4" placeholder="댓글을 작성하세요..." class="form-control"></textarea>
+    <div class="comment-actions">
+        <button onclick="addComment()" class="btn btn-primary" >댓글 작성</button>
+    </div>
+
 
     <!-- 댓글 목록 -->
     <div class="comment-list">
@@ -253,6 +255,12 @@
 </html>
 
 <script>
+
+    //편하게쓰기위한
+    const postNo = document.getElementById("postNo").value;
+    const userNo = document.getElementById("userNo").value;
+
+
     function showReplyForm(commentNo) {
         var replyForm = document.getElementById('reply-form-' + commentNo);
         if (replyForm.style.display === "none") {
@@ -261,4 +269,53 @@
             replyForm.style.display = "none";
         }
     }
+
+    function getCommentList(postNo) {
+        axios.get('/comment/list', { params: { postNo } })
+            .then(response => {
+                const commentList = response.data;
+                const commentContainer = document.querySelector('.comment-list');
+                commentContainer.innerHTML = ''; // 기존 댓글 제거
+
+                commentList.forEach(comment => {
+                    const commentHtml = `
+                    <div class="comment-item">
+                        <div class="comment-text">
+                            <p>\${comment.commentText}</p>
+                            <span class="comment-author">\${comment.memberNm}</span>
+                        </div>
+                        <button class="reply-btn" onclick="showReplyForm(\${comment.commentNo})">답글 달기</button>
+                        <div class="reply-form" id="reply-form-\${comment.commentNo}" style="display:none;">
+                            <form action="addReply" method="post">
+                                <input type="hidden" name="parentCommentNo" value="\${comment.commentNo}">
+                                <textarea name="replyText" rows="2" placeholder="답글을 작성하세요..."></textarea>
+                                <button type="submit">답글 작성</button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+                    commentContainer.insertAdjacentHTML('beforeend', commentHtml);
+                });
+            })
+            .catch(err => console.error('댓글 불러오기 오류:', err));
+    }
+
+    function addComment(){
+
+        const commentText = document.getElementById("commentText").value;
+
+        if(!commentText.trim()){
+            alert("댓글 입력");
+            return;
+        }
+
+        axios.post('/comment/post',{postNo,userNo,commentText})
+            .then(() => {
+                document.querySelector("#commentText").value ="";
+                getCommentList(postNo); //다시부르기 ㅋㅋ
+            })
+            .catch(err => console.error(err));
+    }
+
+
 </script>

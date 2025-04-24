@@ -3,7 +3,9 @@ package com.example.security.board.controller;
 import com.example.security.board.dto.BoardForm;
 import com.example.security.board.dto.SearchDto;
 import com.example.security.board.service.BoardService;
+import com.example.security.board.service.CommentService;
 import com.example.security.board.vo.BoardVO;
+import com.example.security.board.vo.CommentVO;
 import com.example.security.security.CustomUserDetailsService;
 import com.example.security.user.vo.UserVO;
 import com.example.security.utils.ListDto;
@@ -23,6 +25,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @GetMapping("/list")
     public String board(Model model, SearchDto searchDto) {
@@ -32,7 +35,6 @@ public class BoardController {
         model.addAttribute("boardList", list.getData());
         model.addAttribute("pagination", list.getPaging());
 
-
         return "board/list";
     }
 
@@ -40,8 +42,10 @@ public class BoardController {
     public String detail(Model model, @RequestParam(name = "postNo") int id) {
 
         BoardVO detail = boardService.getBoardById(id);
+        List<CommentVO> commentList = commentService.getComments(id);
 
         model.addAttribute("board", detail);
+        model.addAttribute("commentList", commentList);
 
         return "board/detail";
     }
