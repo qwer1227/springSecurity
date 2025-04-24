@@ -221,12 +221,15 @@
     <h3>댓글</h3>
 
     <!-- 댓글 작성 입력란 -->
-    <input type="hidden" id="postNo" name="postNo" value="${board.postNo}">
-    <input type="hidden" id="userNo" name="userNo" value="${sessionScope.user}">
-    <textarea id="commentText" name="commentText" rows="4" placeholder="댓글을 작성하세요..." class="form-control"></textarea>
-    <div class="comment-actions">
-        <button onclick="addComment()" class="btn btn-primary" >댓글 작성</button>
+    <div class="comment-form">
+        <input type="hidden" id="postNo" name="postNo" value="${board.postNo}">
+        <input type="hidden" id="userNo" name="userNo" value="${sessionScope.user}">
+        <textarea id="commentText" name="commentText" rows="4" placeholder="댓글을 작성하세요..." class="form-control"></textarea>
+        <div class="comment-actions">
+            <button onclick="addComment()" class="btn btn-primary" >댓글 작성</button>
+        </div>
     </div>
+
 
 
     <!-- 댓글 목록 -->
