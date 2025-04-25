@@ -26,4 +26,68 @@
         (#{postNo},#{userNo},#{commentText},'N')
     </insert>
 
+    <!-- void updateComment(CommentVO commentForm); -->
+    <update id="updateComment" parameterType="com.example.security.board.vo.CommentVO">
+        UPDATE
+            COMMENTS
+        SET
+            COMMENT_TEXT = #{commentText} , UPDATED_DATE = NOW()
+        WHERE
+            POST_NO = #{postNo}
+        AND
+            COMMENT_NO = #{commentNo}
+        AND
+            USER_NO = #{userNo}
+    </update>
+
+    <!-- void deleteComment(CommentVO commentVO); -->
+    <update id="deleteComment" parameterType="com.example.security.board.vo.CommentVO">
+        UPDATE
+            COMMENTS
+        SET
+            DELETE_AT = 'Y'
+        WHERE
+            POST_NO = #{postNo}
+        AND
+            COMMENT_NO = #{commentNo}
+        AND
+            USER_NO = #{userNo}
+    </update>
+
+    <!-- List<CommentVO> getCommentList(CommentDto commentDto); -->
+    <select id="getCommentList" parameterType="com.example.security.board.dto.CommentDto" resultType="com.example.security.board.vo.CommentVO">
+        SELECT
+            *
+        FROM
+            (
+                SELECT
+                    C.COMMENT_NO
+                    , C.POST_NO
+                    , C.USER_NO
+                    , C.COMMENT_TEXT
+                    , C.CREATED_DATE
+                    , C.UPDATED_DATE
+                    , C.DELETE_AT
+                    , C.PARENT_COMMENT_NO
+                    , M.MEMBER_NM
+                    , ROW_NUMBER() OVER (ORDER BY C.CREATED_DATE DESC, C.COMMENT_NO DESC) AS rn
+                FROM
+                    COMMENTS C
+                JOIN MEMBERS M ON C.USER_NO = M.MEMBER_NO
+                WHERE
+                    C.DELETE_AT = 'N'
+            ) AS COMMENTS
+        WHERE rn BETWEEN #{begin} AND #{end}
+    </select>
+
+    <!-- int getTotalRows(CommentDto commentDto); -->
+    <select id="getTotalRows" parameterType="com.example.security.board.dto.CommentDto" resultType="int">
+        SELECT
+            COUNT(*) as cnt
+        FROM
+            COMMENTS
+        WHERE
+            DELETE_AT = 'N'
+    </select>
+
 </mapper>

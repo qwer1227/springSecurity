@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -174,6 +175,44 @@
         .reply-form button:hover {
             background-color: #218838;
         }
+
+        .pagination {
+            display: flex;
+            justify-content: center; /* 중앙 정렬 */
+            align-items: center;
+            list-style: none; /* 기본 점 제거 */
+            padding-left: 0;
+        }
+
+        .pagination .page-item {
+            margin: 0 4px; /* 페이지 간격 */
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+            border: 1px solid #dee2e6;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #e9ecef;
+            text-decoration: none;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
     </style>
 </head>
 <body>
@@ -234,25 +273,85 @@
 
     <!-- 댓글 목록 -->
     <div class="comment-list">
-        <c:forEach var="comment" items="${commentList}">
-            <div class="comment-item">
-                <div class="comment-text">
-                    <p>${comment.commentText}</p>
-                    <span class="comment-author">${comment.memberNm}</span>
-                </div>
-                <button class="reply-btn btn btn-secondary" onclick="showReplyForm(${comment.commentNo})">답글 달기</button>
+<%--        <c:forEach var="comment" items="${commentList}">--%>
+<%--            <div class="comment-item">--%>
+<%--                <div class="comment-text">--%>
+<%--                    <p>${comment.commentText}</p>--%>
+<%--                    <span class="comment-author">${comment.memberNm}</span>--%>
+<%--                </div>--%>
+<%--                <button class="reply-btn btn btn-secondary" onclick="showReplyForm(${comment.commentNo})">답글 달기</button>--%>
 
-                <!-- 답글 작성 폼 (기본으로 숨기기) -->
-                <div class="reply-form" id="reply-form-${comment.commentNo}" style="display:none;">
-                    <form action="addReply" method="post">
-                        <input type="hidden" name="parentCommentNo" value="${comment.commentNo}">
-                        <textarea name="replyText" rows="2" placeholder="답글을 작성하세요..." class="form-control"></textarea>
-                        <button type="submit" class="btn btn-primary">답글 작성</button>
-                    </form>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
+<%--                <!-- 답글 작성 폼 (기본으로 숨기기) -->--%>
+<%--                <div class="reply-form" id="reply-form-${comment.commentNo}" style="display:none;">--%>
+<%--                    <form action="addReply" method="post">--%>
+<%--                        <input type="hidden" name="parentCommentNo" value="${comment.commentNo}">--%>
+<%--                        <textarea name="replyText" rows="2" placeholder="답글을 작성하세요..." class="form-control"></textarea>--%>
+<%--                        <button type="submit" class="btn btn-primary">답글 작성</button>--%>
+<%--                    </form>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </c:forEach>--%>
+</div>
+
+    <nav aria-label="댓글 페이지 네비게이션">
+        <ul class="pagination justify-content-center">
+            <!-- 페이지 버튼들이 여기에 들어감 -->
+        </ul>
+    </nav>
+
+<%--    <!-- Pagination -->--%>
+<%--    <nav aria-label="Page navigation example" style="margin-top: 2rem;">--%>
+<%--        <ul class="pagination justify-content-center">--%>
+
+
+<%--            <!-- "이전" 버튼 -->--%>
+<%--            <c:if test="${pagination.first}">--%>
+<%--                <li class="page-item disabled">--%>
+<%--                    <a class="page-link" href="#" aria-label="Previous">--%>
+<%--                        <span aria-hidden="true">&laquo;</span>--%>
+<%--                    </a>--%>
+<%--                </li>--%>
+<%--            </c:if>--%>
+<%--            <c:if test="${!pagination.first}">--%>
+<%--                <li class="page-item">--%>
+<%--                    <a class="page-link"--%>
+<%--                       href="?page=${pagination.prevPage}&opt=${param.opt}&keyword=${param.keyword}"--%>
+<%--                       aria-label="Previous">--%>
+<%--                        <span aria-hidden="true">&laquo;</span>--%>
+<%--                    </a>--%>
+<%--                </li>--%>
+<%--            </c:if>--%>
+
+<%--            <!-- 페이지 번호 -->--%>
+<%--            <c:forEach var="pageNum" begin="${pagination.beginPage}" end="${pagination.endPage}">--%>
+<%--                <li class="page-item ${pageNum == pagination.page ? 'active' : ''}">--%>
+<%--                    <a class="page-link"--%>
+<%--                       href="?page=${pageNum}&opt=${param.opt}&keyword=${param.keyword}">--%>
+<%--                            ${pageNum}--%>
+<%--                    </a>--%>
+<%--                </li>--%>
+<%--            </c:forEach>--%>
+
+<%--            <!-- "다음" 버튼 -->--%>
+<%--            <c:if test="${pagination.last}">--%>
+<%--                <li class="page-item disabled">--%>
+<%--                    <a class="page-link" href="#" aria-label="Next">--%>
+<%--                        <span aria-hidden="true">&raquo;</span>--%>
+<%--                    </a>--%>
+<%--                </li>--%>
+<%--            </c:if>--%>
+<%--            <c:if test="${!pagination.last}">--%>
+<%--                <li class="page-item">--%>
+<%--                    <a class="page-link"--%>
+<%--                       href="?page=${pagination.nextPage}&opt=${param.opt}&keyword=${param.keyword}"--%>
+<%--                       aria-label="Next">--%>
+<%--                        <span aria-hidden="true">&raquo;</span>--%>
+<%--                    </a>--%>
+<%--                </li>--%>
+<%--            </c:if>--%>
+
+<%--        </ul>--%>
+<%--    </nav>--%>
 </div>
 </body>
 </html>
@@ -264,6 +363,11 @@
     const userNo = document.getElementById("userNo").value;
 
 
+    document.addEventListener('DOMContentLoaded', function () {
+        getCommentList(postNo, 1); // 첫 페이지 댓글 로드
+    });
+
+
     function showReplyForm(commentNo) {
         var replyForm = document.getElementById('reply-form-' + commentNo);
         if (replyForm.style.display === "none") {
@@ -273,51 +377,145 @@
         }
     }
 
-    function getCommentList(postNo) {
-        axios.get('/comment/list', { params: { postNo } })
+    function getCommentList(postNo, page) {
+        axios.get('/comment/list', {params: {postNo, page}})
             .then(response => {
-                const commentList = response.data;
-                const commentContainer = document.querySelector('.comment-list');
-                commentContainer.innerHTML = ''; // 기존 댓글 제거
-
-                commentList.forEach(comment => {
-                    const commentHtml = `
-                    <div class="comment-item">
-                        <div class="comment-text">
-                            <p>\${comment.commentText}</p>
-                            <span class="comment-author">\${comment.memberNm}</span>
-                        </div>
-                        <button class="reply-btn" onclick="showReplyForm(\${comment.commentNo})">답글 달기</button>
-                        <div class="reply-form" id="reply-form-\${comment.commentNo}" style="display:none;">
-                            <form action="addReply" method="post">
-                                <input type="hidden" name="parentCommentNo" value="\${comment.commentNo}">
-                                <textarea name="replyText" rows="2" placeholder="답글을 작성하세요..."></textarea>
-                                <button type="submit">답글 작성</button>
-                            </form>
-                        </div>
-                    </div>
-                `;
-                    commentContainer.insertAdjacentHTML('beforeend', commentHtml);
-                });
+                const {data, paging} = response.data; // 서버 응답 구조에 맞게 조정
+                renderCommentList(data);
+                renderPagination(paging);
             })
             .catch(err => console.error('댓글 불러오기 오류:', err));
     }
 
-    function addComment(){
+    function renderCommentList(commentList) {
+        const commentContainer = document.querySelector('.comment-list');
+        commentContainer.innerHTML = ''; // 기존 댓글 초기화
+
+        commentList.forEach(comment => {
+
+            // 댓글 작성 시간 포맷 (예: YYYY-MM-DD HH:MM)
+            const formattedDate = new Date(comment.createdDate).toLocaleString();
+
+            // 로그인한 사용자가 작성한 댓글일 경우 삭제/수정 버튼을 표시
+            const isUserComment = comment.userNo == userNo;
+
+            let commentHtml = `
+             <div class="comment-item" id="comment-\${comment.commentNo}">
+            <div class="comment-header">
+                <span class="comment-author">\${comment.memberNm}</span>
+                <span class="comment-date">\${formattedDate}</span>
+            </div>
+             <div class="comment-text" id="comment-text-\${comment.commentNo}">
+                <p>\${comment.commentText}</p>
+            </div>
+
+            <button class="reply-btn btn btn-secondary" onclick="showReplyForm(\${comment.commentNo})">답글 달기</button>
+
+            <!-- 답글 작성 폼 -->
+            <div class="reply-form" id="reply-form-\${comment.commentNo}" style="display:none;">
+                <form action="addReply" method="post">
+                    <input type="hidden" name="parentCommentNo" value="\${comment.commentNo}">
+                    <textarea name="replyText" rows="2" placeholder="답글을 작성하세요..." class="form-control"></textarea>
+                    <button type="submit" class="btn btn-primary">답글 작성</button>
+                </form>
+            </div>
+        `;
+
+            // 수정/삭제 버튼 추가
+            if (isUserComment) {
+                commentHtml += `
+            <div class="comment-actions">
+                <button class="btn btn-warning" id="edit-btn-\${comment.commentNo}" onclick="editComment(\${comment.commentNo})">수정</button>
+                <button class="btn btn-danger" onclick="deleteComment(\${comment.commentNo})">삭제</button>
+            </div>
+            `;
+            }
+
+            commentHtml += '</div>'; // comment-item div 닫기
+
+            commentContainer.insertAdjacentHTML('beforeend', commentHtml);
+        });
+    }
+
+    function renderPagination(pagination) {
+        const paginationContainer = document.querySelector('.pagination');
+        paginationContainer.innerHTML = ''; // 기존 페이징 초기화
+
+        // 이전 버튼
+        const prevBtn = pagination.first
+            ? `<li class="page-item disabled"><a class="page-link">&laquo;</a></li>`
+            : `<li class="page-item"><a class="page-link" href="#" onclick="getCommentList(postNo, \${pagination.prevPage})">&laquo;</a></li>`;
+        paginationContainer.insertAdjacentHTML('beforeend', prevBtn);
+
+        // 페이지 번호들
+        for (let i = pagination.beginPage; i <= pagination.endPage; i++) {
+            const activeClass = i === pagination.page ? 'active' : '';
+            const pageBtn = `
+        <li class="page-item \${activeClass}">
+            <a class="page-link" href="#" onclick="getCommentList(postNo, \${i})">\${i}</a>
+        </li>`;
+            paginationContainer.insertAdjacentHTML('beforeend', pageBtn);
+        }
+
+        // 다음 버튼
+        const nextBtn = pagination.last
+            ? `<li class="page-item disabled"><a class="page-link">&raquo;</a></li>`
+            : `<li class="page-item"><a class="page-link" href="#" onclick="getCommentList(postNo, \${pagination.nextPage})">&raquo;</a></li>`;
+        paginationContainer.insertAdjacentHTML('beforeend', nextBtn);
+    }
+
+    function addComment() {
 
         const commentText = document.getElementById("commentText").value;
 
-        if(!commentText.trim()){
+        if (!commentText.trim()) {
             alert("댓글 입력");
             return;
         }
 
-        axios.post('/comment/post',{postNo,userNo,commentText})
+        axios.post('/comment/post', {postNo, userNo, commentText})
             .then(() => {
-                document.querySelector("#commentText").value ="";
+                document.querySelector("#commentText").value = "";
                 getCommentList(postNo); //다시부르기 ㅋㅋ
             })
             .catch(err => console.error(err));
+    }
+
+    // 수정 버튼 클릭 시 실행될 함수
+    function editComment(commentNo) {
+        const commentTextElement = document.querySelector(`#comment-text-\${commentNo}`);
+        const currentText = commentTextElement.innerText; // 현재 댓글 텍스트 가져오기
+
+        // 댓글 텍스트를 수정할 수 있는 텍스트 입력란으로 변환
+        commentTextElement.innerHTML = `<textarea id="edit-text-\${commentNo}" class="form-control">\${currentText}</textarea>`;
+
+        // 수정 버튼을 저장 버튼으로 변경
+        const editButton = document.querySelector(`#edit-btn-\${commentNo}`);
+        editButton.innerHTML = '저장';
+        editButton.setAttribute('onclick', `saveComment(\${commentNo})`);
+    }
+
+    // 댓글 수정 후 저장 함수
+    function saveComment(commentNo) {
+        const newText = document.querySelector(`#edit-text-\${commentNo}`).value;
+
+        axios.post('/comment/update', {newText,postNo,commentNo,userNo})
+            .then(() => {
+                getCommentList(postNo); //다시부르기 ㅋㅋ
+        })
+            .catch(err => console.error(err));
+
+    }
+
+    // 댓글 삭제 함수 (예시)
+    function deleteComment(commentNo) {
+        const newText = document.querySelector(`#comment-text-\${commentNo}`).value;
+        // 서버에서 삭제 처리 후 댓글 삭제
+        axios.post('/comment/delete', {newText, commentNo,userNo,postNo})
+            .then(() => {
+                getCommentList(postNo);
+        })
+            .catch(err => console.error(err))
     }
 
 
