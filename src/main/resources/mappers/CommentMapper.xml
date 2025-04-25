@@ -88,6 +88,8 @@
             COMMENTS
         WHERE
             DELETE_AT = 'N'
+        AND
+            POST_NO = #{postNo}
     </select>
 
 </mapper>
